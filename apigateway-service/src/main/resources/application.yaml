@@ -16,7 +16,8 @@ spring:
       - id: first-service
         predicates:
         - Path=/first-service/**
-        uri: http://localhost:8081
+#        uri: http://localhost:8081
+        uri: lb://MY-FIRST-SERVICE
         filters:
            - CustomFilter
 #          - AddRequestHeader=first-request, first-request-header-from-yaml
@@ -24,7 +25,8 @@ spring:
       - id: second-serivce
         predicates:
         - Path=/second-service/**
-        uri: http://localhost:8082
+#        uri: http://localhost:8082
+        uri: lb://MY-SECOND-SERVICE
         filters:
            - CustomFilter
            - name: LoggingFilter   
@@ -37,8 +39,8 @@ spring:
 #          - AddResponseHeader=second-response, second-response-header-from-yaml
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: false
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka
 
