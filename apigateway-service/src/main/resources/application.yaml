@@ -6,16 +6,35 @@ spring:
     name: apigateway-service
   cloud:
     gateway:
+      default-filters:
+      - name: GlobalFilter
+        args:
+          baseMessage: Hello Spring Cloud Gateway Global Filter
+          preLogger: true
+          postLogger: true
       routes:
       - id: first-service
         predicates:
         - Path=/first-service/**
         uri: http://localhost:8081
+        filters:
+           - CustomFilter
+#          - AddRequestHeader=first-request, first-request-header-from-yaml
+#          - AddResponseHeader=first-response, first-response-header-from-yaml
       - id: second-serivce
         predicates:
         - Path=/second-service/**
         uri: http://localhost:8082
-      
+        filters:
+           - CustomFilter
+           - name: LoggingFilter   
+             args: 
+              baseMessage: Hello Logging Filter
+              preLogger: true
+              postLogger: true 
+
+#          - AddRequestHeader=second-request, second-request-header-from-yaml
+#          - AddResponseHeader=second-response, second-response-header-from-yaml
 eureka:
   client:
     register-with-eureka: false
